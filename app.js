@@ -9,6 +9,9 @@ const taskInput = document.querySelector('#task');
 loadEventListeners();
 
 function loadEventListeners() {
+  //DOM load event
+  document.addEventListener('DOMContentLoaded', getTasks);
+
   //Add task event
   form.addEventListener('submit', addTask);
 
@@ -22,35 +25,51 @@ function loadEventListeners() {
   filter.addEventListener('keyup', filterTasks)
 }
 
+//Get tasks from LocalStorage
+function getTasks() {
+  let tasks;
+  
+  if(localStorage.getItem('tasks') === null) {
+    tasks = [];
+  } else {
+    tasks = JSON.parse(localStorage.getItem('tasks'));
+  }
+
+  tasks.forEach(function(task) {
+    //Create li element
+    const li = document.createElement('li');
+
+    //Add class
+    li.className = 'collection-item';
+    
+    //Create text node and append to li
+    li.appendChild(document.createTextNode(task));
+    
+    //Create new link element
+    const link = document.createElement('a');
+
+    //Add class
+    link.className = 'delete-item secondary-content';
+
+    //Add icon html
+    link.innerHTML = '<i class="fa fa-remove"></i>';
+
+    //Append the link to li
+    li.appendChild(link);
+
+    //Append li to ul
+    taskList.appendChild(li);
+  });
+}
+
+
 //Add Task function
 function addTask(e) {
   if(taskInput.value === '') {
     alert('Add a task');
   }
 
-  //Create li element
-  const li = document.createElement('li');
-  
-  //Add class
-  li.className = 'collection-item';
-  
-  //Create text node and append to li
-  li.appendChild(document.createTextNode(taskInput.value));
-  
-  //Create new link element
-  const link = document.createElement('a');
-
-  //Add class
-  link.className = 'delete-item secondary-content';
-
-  //Add icon html
-  link.innerHTML = '<i class="fa fa-remove"></i>';
-
-  //Append the link to li
-  li.appendChild(link);
-
-  //Append li to ul
-  taskList.appendChild(li);
+  createItem();
 
   //Store in LocalStorage
   storeTaskInLocalStorage(taskInput.value);
@@ -108,4 +127,33 @@ function filterTasks(e) {
     }
   });
 }
+
+//Helper Functions
+
+function createItem() {
+
+  //Create li element
+  const li = document.createElement('li');
+  
+  //Add class
+  li.className = 'collection-item';
+  
+  //Create text node and append to li
+  li.appendChild(document.createTextNode(taskInput.value));
+  
+  //Create new link element
+  const link = document.createElement('a');
+
+  //Add class
+  link.className = 'delete-item secondary-content';
+
+  //Add icon html
+  link.innerHTML = '<i class="fa fa-remove"></i>';
+
+  //Append the link to li
+  li.appendChild(link);
+
+  //Append li to ul
+  taskList.appendChild(li);
+  }
 
