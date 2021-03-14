@@ -14,6 +14,9 @@ function loadEventListeners() {
 
   //Remove task event
   taskList.addEventListener('click', removeTask);
+
+  //Clear task event
+  clearBtn.addEventListener('click', clearTasks);
 }
 
 //Add Task function
@@ -60,4 +63,14 @@ function removeTask(e) {
     }
 
   }  
+}
+
+//Clear tasks
+function clearTasks() {
+  // taskList.innerHTML = '';
+
+  //faster way based on https://jsperf.com/innerhtml-vs-removechild
+  while(taskList.firstChild) {
+    taskList.removeChild(taskList.firstChild);
+  }
 }
