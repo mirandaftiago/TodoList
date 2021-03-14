@@ -22,7 +22,7 @@ function loadEventListeners() {
   clearBtn.addEventListener('click', clearTasks);
 
   //Filter tasks events
-  filter.addEventListener('keyup', filterTasks)
+  filter.addEventListener('keyup', filterTasks);
 }
 
 //Get tasks from LocalStorage
@@ -97,12 +97,15 @@ function storeTaskInLocalStorage(task) {
 
 //Remove task
 function removeTask(e) {
+
+  const parentElement = e.target.parentElement.parentElement;
+
   if(e.target.parentElement.classList.contains('delete-item')) {
     if(confirm('Are you sure?')) {
-      e.target.parentElement.parentElement.remove();
+      parentElement.remove();
 
       //Remove task from LocalStorage
-      removeTaskFromLocalStorage(e.target.parentElement.parentElement);
+      removeTaskFromLocalStorage(parentElement);
     }
   }  
 }
@@ -126,7 +129,6 @@ function removeTaskFromLocalStorage(taskItem) {
 
 //Clear tasks
 function clearTasks() {
-  // taskList.innerHTML = '';
 
   //faster way based on https://jsperf.com/innerhtml-vs-removechild
   while(taskList.firstChild) {
@@ -183,4 +185,3 @@ function createItem() {
   //Append li to ul
   taskList.appendChild(li);
   }
-
